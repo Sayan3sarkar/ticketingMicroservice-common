@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import { config } from "../config";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
-import { UserPayload } from "../../../auth/src/types/userType";
+import { UserPayload } from "../types";
 
 const currentUserMiddleware = (
   req: Request,
