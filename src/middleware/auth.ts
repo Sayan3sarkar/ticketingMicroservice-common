@@ -26,14 +26,22 @@ const currentUserMiddleware = (
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const currentUser = req.user;
-    console.log(req.session, currentUser, "Hitting auth middleware");
-    if (!currentUser) {
-      console.log("Unauthenticated request");
+    const authToken = req.session?.jwt;
+
+    if (!authToken) {
+      console.log("Auth Token not sent");
       throw new NotAuthorizedError();
     }
 
-    console.log("calling next after this");
+    console.log("JWT Secret: ", config.jwtSecret);
+
+    const user = verify(authToken, config.jwtSecret) as UserPayload;
+    if (!user) {
+      console.log("Invalid token");
+      throw new NotAuthorizedError();
+    }
+
+    req.user = user;
     next();
   } catch (err) {
     next(err);
