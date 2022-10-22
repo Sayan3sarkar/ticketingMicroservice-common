@@ -9,17 +9,15 @@ const currentUserMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
+  const authToken = req.session?.jwt;
+
+  if (!authToken) {
+    return next();
+  }
+
   try {
-    const authToken = req.session?.jwt;
-
-    if (!authToken) {
-      return next();
-    }
-
     const user = verify(authToken, config.jwtSecret) as UserPayload;
     req.user = user;
-
-    // next();
   } catch (err) {
     // next(err);
   }
