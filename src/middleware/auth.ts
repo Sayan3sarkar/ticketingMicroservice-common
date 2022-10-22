@@ -28,6 +28,7 @@ const currentUserMiddleware = (
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     // const authToken = req.session?.jwt;
+    console.log(req.user, "Hitting auth middleware");
     const currentUser = req.user;
 
     // if (!authToken) {
