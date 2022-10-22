@@ -27,7 +27,7 @@ const currentUserMiddleware = (
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     const currentUser = req.user;
-    console.log(req.session, req.user, currentUser, "Hitting auth middleware");
+    console.log(req.session, currentUser, "Hitting auth middleware");
     if (!currentUser) {
       console.log("Unauthenticated request");
       throw new NotAuthorizedError();
