@@ -19,26 +19,23 @@ const currentUserMiddleware = (
     const user = verify(authToken, config.jwtSecret) as UserPayload;
     req.user = user;
 
-    next();
+    // next();
   } catch (err) {
-    next(err);
+    // next(err);
   }
+  next();
 };
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authToken = req.session?.jwt;
-    console.log(req.session, "Hitting auth middleware");
-    // const currentUser = req.user;
-
-    if (!authToken) {
-      // if (!currentUser) {
+    const currentUser = req.user;
+    console.log(req.session, req.user, currentUser, "Hitting auth middleware");
+    if (!currentUser) {
+      console.log("Unauthenticated request");
       throw new NotAuthorizedError();
     }
 
-    const user = verify(authToken, config.jwtSecret) as UserPayload;
-    req.user = user;
-
+    console.log("calling next after this");
     next();
   } catch (err) {
     next(err);
