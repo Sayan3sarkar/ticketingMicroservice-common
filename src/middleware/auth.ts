@@ -27,17 +27,17 @@ const currentUserMiddleware = (
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
-    // const authToken = req.session?.jwt;
+    const authToken = req.session?.jwt;
     console.log(req.user, "Hitting auth middleware");
-    const currentUser = req.user;
+    // const currentUser = req.user;
 
-    // if (!authToken) {
-    if (!currentUser) {
+    if (!authToken) {
+    // if (!currentUser) {
       throw new NotAuthorizedError();
     }
 
-    // const user = verify(authToken, config.jwtSecret) as UserPayload;
-    // req.user = user;
+    const user = verify(authToken, config.jwtSecret) as UserPayload;
+    req.user = user;
 
     next();
   } catch (err) {
