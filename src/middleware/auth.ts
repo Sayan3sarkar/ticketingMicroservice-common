@@ -17,7 +17,7 @@ const currentUserMiddleware = (
 
   try {
     console.log(authToken, config.jwtSecret, "Before verifying JWT");
-    const user = verify(authToken, config.jwtSecret) as UserPayload;
+    const user = verify(authToken, process.env.JWT_KEY!) as UserPayload;
     req.user = user;
   } catch (err) {
     // next(err);
