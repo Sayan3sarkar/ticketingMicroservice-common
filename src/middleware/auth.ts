@@ -16,6 +16,7 @@ const currentUserMiddleware = (
   }
 
   try {
+    console.log(authToken, config.jwtSecret, "Before verifying JWT");
     const user = verify(authToken, config.jwtSecret) as UserPayload;
     req.user = user;
   } catch (err) {
@@ -26,22 +27,14 @@ const currentUserMiddleware = (
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authToken = req.session?.jwt;
+    const currentUser = req.user;
 
-    if (!authToken) {
-      console.log("Auth Token not sent");
+    if (!currentUser) {
+      console.log("Unauthenticated request");
       throw new NotAuthorizedError();
     }
 
-    console.log("JWT Secret: ", config.jwtSecret);
-
-    const user = verify(authToken, config.jwtSecret) as UserPayload;
-    if (!user) {
-      console.log("Invalid token");
-      throw new NotAuthorizedError();
-    }
-
-    req.user = user;
+    console.log("calling next after this");
     next();
   } catch (err) {
     next(err);
