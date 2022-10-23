@@ -7,11 +7,18 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  if (err && process.env.NODE_ENV !== "TESTING") {
-    if (err instanceof CustomError) {
-      return res.status(err.statusCode).send({ errors: err.serializeErrors() });
-    }
+  if (err instanceof CustomError) {
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
+
+  console.error(err);
+  res.status(400).send({
+    errors: [
+      {
+        message: "Something went wrong",
+      },
+    ],
+  });
 }
 
 export { errorHandler };
